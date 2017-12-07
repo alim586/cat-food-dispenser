@@ -10,6 +10,7 @@
 	<modules>
 		<module>api</module>
 		<module>arduinoclient</module>
+		<module>arduino-lib</module>
 	</modules>
 
 	<name>dispenser-api</name>
