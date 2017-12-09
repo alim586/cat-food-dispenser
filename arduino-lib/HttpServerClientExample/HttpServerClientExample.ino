@@ -51,7 +51,7 @@ BridgeServer server;
 Servo servo;
 RestClientUtil util;
 
-int servoState= 0 ;
+int pos = 0;    // variable to store the servo position
 
 void setup() {
 
@@ -78,10 +78,16 @@ void loop() {
 
   // There is a new client?
   if (client) {
-   String command = util.readCommandFromRequest(client);
-   determineCommand(command, client);
+   String command;
 
-  delay(2000);
+   command = util.readServoCommandFromRequest(client);
+
+   if(command == 'start')
+   {
+     runServo();
+     printToScreen(util.getResponse(command, client));
+   }
+
   display.clearDisplay();
 
     // Close connection and free resources.
@@ -92,68 +98,26 @@ void loop() {
   delay(50); // Poll every 50ms
 }
 
-String determineCommand(String command, BridgeClient client) {
-
-  // is "digital" command?
-  if (command == "digital") {
-    digitalCommand(client);
-  }
-}
-
-void digitalCommand(BridgeClient client) {
-  int pin, value;
-
-  // Read pin number
-  pin = client.parseInt();
-
-  // If the next character is a '/' it means we have an URL
-  // with a value like: "/digital/13/1"
-
-
-  if (client.read() == '/') {
-    value = client.parseInt();
-    digitalWrite(pin, value);
-  } else {
-    value = digitalRead(pin);
-  }
-
-  // Send feedback to client
-  client.print(pin);
-  client.print(F(","));
-  client.println(value);
-
-  // Update datastore key with the current pin value
-  String key = "D";
-  key += pin;
-  Bridge.put(key, String(value));
-
-  int angle = 0;
-  servoState += value;
-  Serial.println(String(servoState));
-
-  angle = rotateServo(value); 
-
-  testscrolltext(pin, value, angle);
-
-}
-
-void testscrolltext(int pin, int value, int angle) {
-  display.setTextSize(2);
+void printToScreen(String response) {
+  display.setTextSize(3);
   display.setTextColor(WHITE);
   display.setCursor(10,0);
   display.clearDisplay();
-  display.println(pin);
-  display.print(value);
-  display.print(angle);
-  display.print("degrees");
+  display.print(response);
   display.display();
-  delay(1);
 }
 
-int rotateServo(int value){
-  servo.write(value);
-  return servo.read();
-  
+void runServo(){
+    
+ for (pos = 0; pos <= 180; pos += 1) { // goes from 0 degrees to 180 degrees
+   // in steps of 1 degree
+   servo.write(pos);              // tell servo to go to position in variable 'pos'
+   delay(15);                       // waits 15ms for the servo to reach the position
+  }
+ for (pos = 180; pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
+  servo.write(pos);              // tell servo to go to position in variable 'pos'
+  delay(15);                       // waits 15ms for the servo to reach the position
+  }
 }
 
 

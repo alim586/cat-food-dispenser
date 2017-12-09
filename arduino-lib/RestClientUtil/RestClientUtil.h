@@ -12,8 +12,8 @@ class RestClientUtil
 {
     public:
       RestClientUtil();
-      String readCommandFromRequest(BridgeClient client);
-    
+      String readServoCommandFromRequest(BridgeClient client);
+      String getResponse(String command, BridgeClient client);
 };
 
 #endif

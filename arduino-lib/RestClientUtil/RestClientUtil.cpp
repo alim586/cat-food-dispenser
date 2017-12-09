@@ -8,7 +8,30 @@
 #include "BridgeClient.h"
 
 RestClientUtil::RestClientUtil(){}
-String RestClientUtil::readCommandFromRequest(BridgeClient client)
+
+String RestClientUtil::readServoCommandFromRequest(BridgeClient client)
 {
-return client.readStringUntil('/');
+    String path = client.readStringUntil('/');
+    String value;
+    if(path == 'servo'){
+         value = client.readStringUntil('/');
+    }else{
+         return "command not allowed";
+    }
+
+    if(value == 'start'){
+         return value;
+    }
+    if(value == 'stop'){
+         return value;
+    }
+
+    return "command not allowed";
 }
+
+String RestClientUtil::getResponse(String command, BridgeClient client) {
+      String rm = "{command:"+command+"}";
+      client.print(rm);
+      return rm;
+}
+

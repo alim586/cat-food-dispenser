@@ -7,8 +7,8 @@
     <artifactId>cat-food-dispenser</artifactId>
     <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
-   
 
-    <name>dispenser-api</name>
+    <name>dispenser-arduino-lib</name>
 
+    
 </project>
