@@ -1,11 +1,11 @@
 package nl.josephk.cat.food.dispenser;
 
 
-import nl.josephk.cat.food.dispenser.dto.ReadResult;
+import nl.josephk.cat.food.dispenser.dto.Result;
 
 public interface YunService {
 
-      ReadResult testServo(String state);
+      Result servoDemo(String state);
 
-      ReadResult changePin12State(String state);
+      Result changePin12State(String command);
 }

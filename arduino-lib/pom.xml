@@ -4,11 +4,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>nl.josephk</groupId>
-    <artifactId>cat-food-dispenser</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>dispenser-arduino-lib</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-
-    <name>dispenser-arduino-lib</name>
+    <name>arduino-lib</name>
+    <packaging>pom</packaging>
 
     
 </project>

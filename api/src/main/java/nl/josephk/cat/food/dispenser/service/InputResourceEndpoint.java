@@ -1,7 +1,7 @@
 package nl.josephk.cat.food.dispenser.service;
 
-import static nl.josephk.cat.food.dispenser.dto.YunInput.PIN_12;
-import static nl.josephk.cat.food.dispenser.dto.YunInput.PIN_13;
+import static nl.josephk.cat.food.dispenser.dto.YunInput.DEMO;
+import static nl.josephk.cat.food.dispenser.dto.YunInput.SERVO;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import nl.josephk.cat.food.dispenser.client.YunServiceClient;
-import nl.josephk.cat.food.dispenser.dto.ReadResult;
+import nl.josephk.cat.food.dispenser.dto.Result;
 
 @Component
 @Path("/pin")
@@ -26,17 +26,17 @@ public class InputResourceEndpoint {
     @GET
     @Path("{id}")
     @Produces("application/json")
-    public Response putDigitalPin(@PathParam("id") String id, @QueryParam("state") String state) {
+    public Response sendArduinoCommand(@PathParam("id") String id, @QueryParam("command") String command) {
 
         switch (id) {
-            case PIN_13:
-                ReadResult digitalResult = yunServiceClient.testServo(state);
+            case SERVO:
+                Result digitalResult = yunServiceClient.servoDemo(command);
                 return Response.status(201).header("Access-Control-Allow-Origin", "*").entity(digitalResult).build();
-            case PIN_12:
-                ReadResult analogResult = yunServiceClient.changePin12State(state);
+            case DEMO:
+                Result analogResult = yunServiceClient.changePin12State(command);
                 return Response.status(201).header("Access-Control-Allow-Origin", "*").entity(analogResult).build();
             default:
-                ReadResult defaultResult = yunServiceClient.testServo("0");
+                Result defaultResult = yunServiceClient.servoDemo("start");
                 return Response.status(201).header("Access-Control-Allow-Origin", "*").entity(defaultResult).build();
 
         }
